@@ -6,6 +6,9 @@ contract SimpleStorage {
     // automatically inialize by 0
     uint256  favoriteNumber;
     
+    //map
+    mapping(string=> uint256) public nameToFavoriteNumber;
+    
     // structs
     struct People{
         uint256 favoriteNumber;
@@ -16,7 +19,7 @@ contract SimpleStorage {
     People[] public people;
 
 
-    function store(uint256 _favoriteNumber)public{
+    function store(uint256 _favoriteNumber)public virtual{
         favoriteNumber=_favoriteNumber;
         
     }
@@ -28,6 +31,7 @@ contract SimpleStorage {
         //People memory newPerson = People({favoriteNumber: _favoriteNumber, name: _name});
         //people.push(newPerson);
         people.push(People( _favoriteNumber , _name));//same thing
+        nameToFavoriteNumber[_name]=_favoriteNumber;
     }
     
 }
