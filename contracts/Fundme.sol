@@ -5,13 +5,14 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 import "./PriceConverter.sol";
-
+//we can use coustam error instead of require to be gas efficent
+error NotOwner();
 contract FundMe {
     using PriceConverter for uint256;
-   uint256 public minimumUsd=50*1e18;
+   uint256 public constant minimumUsd=50*1e18; //constant immutable takes less gas use when you have const variable
    address[] public funders;
    mapping(address => uint256) public addressToAmountFunded;
-   address public owner;
+   address public immutable owner; //using immutable when only assigned one time
 
 
    constructor(){
@@ -49,7 +50,8 @@ contract FundMe {
     }
 
     modifier onlyOwner  {
-        require(msg.sender==owner,"Sender is not owner!");
+        //require(msg.sender==owner,"Sender is not owner!");
+        if(msg.sender != owner){revert NotOwner();}
         _;
     }
 
